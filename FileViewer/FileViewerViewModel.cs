@@ -82,7 +82,7 @@ namespace FileViewer
             pages.Clear();
 
             RasterCodecs codecs = new RasterCodecs();
-            using (RasterImage rasterImage = codecs.Load(sourceFileName, 0, CodecsLoadByteOrder.Bgr, 1, 1))
+            using (RasterImage rasterImage = codecs.Load(sourceFileName))
             {
                 for (int page = 0; page < rasterImage.PageCount; page++)
                 {
@@ -110,9 +110,10 @@ namespace FileViewer
 
         private void SetSelectedPageToNext(object input)
         {
-            if (pages.Count - 1 > selectedPage.PageNumber)
+            var nextPage = selectedPage.PageNumber + 1;
+            if (pages.Count > nextPage)
             {
-                SelectedPage = pages.ElementAt(selectedPage.PageNumber + 1);
+                SelectedPage = pages.ElementAt(nextPage);
             }
         }
 
