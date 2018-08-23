@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace FileViewer
 {
-    public class ImageDocument : ObservableObject
+    public class ImageDocumentViewModel : ObservableObject
     {
 
-        public ImageDocument(Stream stream)
+        public ImageDocumentViewModel(Stream stream)
         {
             RasterCodecs codecs = new RasterCodecs();
             codecs.Options.Load.PreferVector = true;
@@ -17,10 +17,10 @@ namespace FileViewer
             codecs.Options.Load.Resolution = 72;
 
             CodecsImageInfo imageInfo = codecs.GetInformation(stream, true);
-            Pages = new List<Page>();
+            Pages = new List<PageViewModel>();
             for (int page = 1; page <= imageInfo.TotalPages; page++)
             {
-                Pages.Add(new Page(stream, codecs, page));
+                Pages.Add(new PageViewModel(stream, codecs, page));
             }
 
             if (imageInfo.TotalPages > 0)
@@ -29,7 +29,7 @@ namespace FileViewer
             }
         }
 
-        public IList<Page> Pages
+        public IList<PageViewModel> Pages
         {
             get;
         }
@@ -49,9 +49,9 @@ namespace FileViewer
             }
         }
 
-        private Page activePage;
+        private PageViewModel activePage;
 
-        public Page ActivePage
+        public PageViewModel ActivePage
         {
             get => activePage;
             set

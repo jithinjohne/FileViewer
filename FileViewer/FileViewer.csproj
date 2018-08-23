@@ -79,7 +79,7 @@
       <DependentUpon>FileViewerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileViewerViewModel.cs" />
-    <Compile Include="ImageDocument.cs" />
+    <Compile Include="ImageDocumentViewModel.cs" />
     <Compile Include="LeadToolsHelpers\LeadToolsAttachedProperties.cs" />
     <Compile Include="LeadToolsHelpers\License.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -90,7 +90,7 @@
   <ItemGroup>
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
-    <Compile Include="Page.cs" />
+    <Compile Include="PageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

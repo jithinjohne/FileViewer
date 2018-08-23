@@ -8,8 +8,7 @@ namespace FileViewer
     public class FileViewerViewModel : ObservableObject
     {
         private string sourceFileName;
-        private double zoomLevel;
-        private ImageDocument imageDocument;
+        private readonly double zoomLevel;
 
         public FileViewerViewModel()
         {
@@ -20,7 +19,6 @@ namespace FileViewer
 
             ZoomIn = new RelayCommand(x => InCreaseZoomLevel(x));
             ZoomOut = new RelayCommand(x => DecreaseZoomLevel(x));
-            ZoomLevel = 1;
 
             Fit = new RelayCommand(x => FitImage(x));
         }
@@ -31,37 +29,29 @@ namespace FileViewer
 
         public ICommand PreviousPage { get; set; }
 
-        public Page ActivePage => imageDocument?.ActivePage;
+        private PageViewModel ActivePage => ImageDocument?.ActivePage;
+
+        public ImageDocumentViewModel ImageDocument { get; private set; }
 
         public ICommand SelectFileCommand { get; set; }
 
         public ICommand ZoomIn { get; set; }
 
-        public double ZoomLevel
-        {
-            get => zoomLevel;
-            set
-            {
-                zoomLevel = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ICommand ZoomOut { get; set; }
 
         private void DecreaseZoomLevel(object x)
         {
-            ZoomLevel = ZoomLevel - 0.25;
+            ActivePage.SetZoomLevel(ActivePage.ZoomLevel - 0.25);
         }
 
         private void FitImage(object x)
         {
-            ZoomLevel = 1;
+            ActivePage.SetZoomLevel(1);
         }
 
         private void InCreaseZoomLevel(object x)
         {
-            ZoomLevel = ZoomLevel + 0.25;
+            ActivePage.SetZoomLevel(ActivePage.ZoomLevel + 0.25);
         }
 
         private void LoadFileAsPages()
@@ -71,9 +61,9 @@ namespace FileViewer
             fileStream.CopyTo(memoryStream);
             memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
 
-            imageDocument = new ImageDocument(memoryStream);
+            ImageDocument = new ImageDocumentViewModel(memoryStream);
 
-            OnPropertyChanged(nameof(ZoomLevel));
+            OnPropertyChanged(nameof(ImageDocument));
         }
 
 
@@ -94,10 +84,9 @@ namespace FileViewer
         private void SetSelectedPageToNext(object input)
         {
             int nextPage = ActivePage.PageNumber + 1;
-            if (nextPage < imageDocument.PageCount)
+            if (nextPage < ImageDocument.PageCount)
             {
-                imageDocument.SetActivePage(nextPage);
-                OnPropertyChanged(nameof(ActivePage));
+                ImageDocument.SetActivePage(nextPage);
             }
         }
 
@@ -106,7 +95,7 @@ namespace FileViewer
             int previousPage = ActivePage.PageNumber - 1;
             if (previousPage > 0)
             {
-                imageDocument.SetActivePage(previousPage);
+                ImageDocument.SetActivePage(previousPage);
             }
         }
     }

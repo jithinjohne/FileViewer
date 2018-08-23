@@ -10,6 +10,16 @@
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="ImageViewerStyle" TargetType="Leadtools_Controls_Wpf:ImageViewer">
+                <Setter
+                    Property="Background"
+                    Value="Blue"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <local:FileViewerViewModel />
     </UserControl.DataContext>
@@ -50,6 +60,12 @@
                 <Button
                     Content="Next"
                     Command="{Binding NextPage}" />
+                <TextBlock
+                    Margin="10 0"
+                    Text="{Binding ImageDocument.ActivePage.PageNumber}" />
+                <TextBlock
+                    Margin="10 0"
+                    Text="{Binding ImageDocument.ActivePage.ZoomLevel}" />
             </StackPanel>
             <Border
                 BorderBrush="DarkBlue"
@@ -60,8 +76,9 @@
                 <Leadtools_Controls_Wpf:ImageViewer
                     Width="800"
                     Height="600"
-                    leadToolsHelpers:LeadToolsAttachedProperties.ZoomLevel="{Binding ZoomLevel}"
-                    leadToolsHelpers:LeadToolsAttachedProperties.RasterImage="{Binding ActivePage.Image}" />
+                    Style="{StaticResource ImageViewerStyle}"
+                    leadToolsHelpers:LeadToolsAttachedProperties.RasterImage="{Binding ImageDocument.ActivePage.Image}"
+                    leadToolsHelpers:LeadToolsAttachedProperties.ZoomLevel="{Binding ImageDocument.ActivePage.ZoomLevel}" />
             </Border>
         </Grid>
     </StackPanel>
