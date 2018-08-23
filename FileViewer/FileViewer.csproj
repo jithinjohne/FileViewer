@@ -79,6 +79,7 @@
       <DependentUpon>FileViewerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileViewerViewModel.cs" />
+    <Compile Include="ImageDocument.cs" />
     <Compile Include="LeadToolsHelpers\LeadToolsAttachedProperties.cs" />
     <Compile Include="LeadToolsHelpers\License.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -1,6 +1,7 @@
 ﻿using Leadtools;
 using Leadtools.Controls;
 using Leadtools.Windows.Media;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -61,5 +62,33 @@ namespace FileViewer.LeadToolsHelpers
         }
 
         #endregion ImageProperty
+
+        #region RasterImageSource
+
+
+        public static RasterImage GetRasterImage(DependencyObject obj)
+        {
+            return (RasterImage)obj.GetValue(RasterImageProperty);
+        }
+
+        public static void SetRasterImage(DependencyObject obj, RasterImage value)
+        {
+            obj.SetValue(RasterImageProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for RasterImage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RasterImageProperty =
+            DependencyProperty.RegisterAttached("RasterImage", typeof(RasterImage), typeof(LeadToolsAttachedProperties), new PropertyMetadata(default(RasterImage), OnImageSourceChanged));
+
+        private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ImageViewer imageViewer && e.NewValue is RasterImage rasterImage)
+            {
+                imageViewer.Image = rasterImage;
+            }
+        }
+
+
+        #endregion
     }
 }

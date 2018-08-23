@@ -1,20 +1,15 @@
 ﻿using FileViewer.MVVM;
-using Leadtools;
-using Leadtools.Codecs;
-using Leadtools.Windows.Media;
 using Microsoft.Win32;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Windows.Input;
 
 namespace FileViewer
 {
     public class FileViewerViewModel : ObservableObject
     {
-        private List<Page> pages = new List<Page>();
-        private Page selectedPage;
         private string sourceFileName;
         private double zoomLevel;
+        private ImageDocument imageDocument;
 
         public FileViewerViewModel()
         {
@@ -36,15 +31,7 @@ namespace FileViewer
 
         public ICommand PreviousPage { get; set; }
 
-        public Page SelectedPage
-        {
-            get => selectedPage;
-            set
-            {
-                selectedPage = value;
-                OnPropertyChanged();
-            }
-        }
+        public Page ActivePage => imageDocument?.ActivePage;
 
         public ICommand SelectFileCommand { get; set; }
 
@@ -79,21 +66,17 @@ namespace FileViewer
 
         private void LoadFileAsPages()
         {
-            pages.Clear();
+            FileStream fileStream = File.Open(sourceFileName, FileMode.Open);
+            MemoryStream memoryStream = new MemoryStream();
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
 
-            RasterCodecs codecs = new RasterCodecs();
-            using (RasterImage rasterImage = codecs.Load(sourceFileName))
-            {
-                for (int page = 0; page < rasterImage.PageCount; page++)
-                {
-                    System.Windows.Media.ImageSource source = RasterImageConverter.ConvertToSource(rasterImage, ConvertToSourceOptions.None);
-                    pages.Add(new Page { PageNumber = page, Image = source });
-                }
-            }
+            imageDocument = new ImageDocument(memoryStream);
 
-            SelectedPage = pages.FirstOrDefault();
             OnPropertyChanged(nameof(ZoomLevel));
         }
+
+
 
         private void SelectFile(object obj)
         {
@@ -110,18 +93,20 @@ namespace FileViewer
 
         private void SetSelectedPageToNext(object input)
         {
-            var nextPage = selectedPage.PageNumber + 1;
-            if (pages.Count > nextPage)
+            int nextPage = ActivePage.PageNumber + 1;
+            if (nextPage < imageDocument.PageCount)
             {
-                SelectedPage = pages.ElementAt(nextPage);
+                imageDocument.SetActivePage(nextPage);
+                OnPropertyChanged(nameof(ActivePage));
             }
         }
 
         private void SetSelectedPageToPrevious(object input)
         {
-            if (selectedPage.PageNumber > 0)
+            int previousPage = ActivePage.PageNumber - 1;
+            if (previousPage > 0)
             {
-                selectedPage = pages.ElementAt(selectedPage.PageNumber - 1);
+                imageDocument.SetActivePage(previousPage);
             }
         }
     }

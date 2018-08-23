@@ -1,16 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using Leadtools;
+using Leadtools.Codecs;
+using System.IO;
 
 namespace FileViewer
 {
     public class Page
     {
-        public int PageNumber { get; set; }
-        public ImageSource Image { get; set; }
+        private readonly Stream stream;
+        private readonly RasterCodecs rasterCodecs;
+
+        public Page(Stream stream, RasterCodecs rasterCodecs, int pageNumber)
+        {
+            this.stream = stream;
+            this.rasterCodecs = rasterCodecs;
+            PageNumber = pageNumber;
+            ZoomLevel = 1;
+        }
+
+        public int PageNumber { get; }
+
+        public RasterImage Image => GetImageFromStream();
+
+        public RasterImage GetImageFromStream()
+        {
+            return rasterCodecs.Load(stream, PageNumber);
+
+        }
+
         public double ZoomLevel { get; set; }
     }
 }
