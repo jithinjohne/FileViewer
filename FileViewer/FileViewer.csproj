@@ -67,6 +67,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LeadToolsHelpers\ImageDocumentViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +84,7 @@
     </Compile>
     <Compile Include="FileViewerViewModel.cs" />
     <Compile Include="ImageDocumentViewModel.cs" />
+    <Compile Include="LeadToolsHelpers\ImageDocumentViewer.cs" />
     <Compile Include="LeadToolsHelpers\LeadToolsAttachedProperties.cs" />
     <Compile Include="LeadToolsHelpers\License.cs" />
     <Compile Include="MainWindow.xaml.cs">

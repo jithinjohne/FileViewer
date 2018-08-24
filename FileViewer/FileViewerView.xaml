@@ -66,6 +66,7 @@
                 <TextBlock
                     Margin="10 0"
                     Text="{Binding ImageDocument.ActivePage.ZoomLevel}" />
+                <leadToolsHelpers:ImageDocumentViewer></leadToolsHelpers:ImageDocumentViewer>
             </StackPanel>
             <Border
                 BorderBrush="DarkBlue"
