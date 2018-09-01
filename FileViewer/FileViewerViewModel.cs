@@ -14,13 +14,18 @@ namespace FileViewer
         {
             SelectFileCommand = new RelayCommand((x) => SelectFile(x));
 
-            NextPage = new RelayCommand(p => SetSelectedPageToNext(p));
-            PreviousPage = new RelayCommand(p => SetSelectedPageToPrevious(p));
+            NextPage = new RelayCommand(p => SetSelectedPageToNext(p), o => DocumentIsReady(o));
+            PreviousPage = new RelayCommand(p => SetSelectedPageToPrevious(p), (o) => DocumentIsReady(o));
 
-            ZoomIn = new RelayCommand(x => InCreaseZoomLevel(x));
-            ZoomOut = new RelayCommand(x => DecreaseZoomLevel(x));
+            ZoomIn = new RelayCommand(x => InCreaseZoomLevel(x), (o) => DocumentIsReady(o));
+            ZoomOut = new RelayCommand(x => DecreaseZoomLevel(x), (o) => DocumentIsReady(o));
 
-            Fit = new RelayCommand(x => FitImage(x));
+            Fit = new RelayCommand(x => FitImage(x), (o) => DocumentIsReady(o));
+        }
+
+        private bool DocumentIsReady(object o)
+        {
+            return ActivePage != null;
         }
 
         public ICommand Fit { get; set; }

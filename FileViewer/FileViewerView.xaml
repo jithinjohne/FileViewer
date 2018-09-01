@@ -55,10 +55,10 @@
                     Command="{Binding Fit}" />
                 <Button
                     Margin="10 0 5 0"
-                    Content="Previous"
+                    Content="˅"
                     Command="{Binding PreviousPage}" />
                 <Button
-                    Content="Next"
+                    Content="˄"
                     Command="{Binding NextPage}" />
                 <TextBlock
                     Margin="10 0"
@@ -66,7 +66,6 @@
                 <TextBlock
                     Margin="10 0"
                     Text="{Binding ImageDocument.ActivePage.ZoomLevel}" />
-                <leadToolsHelpers:ImageDocumentViewer></leadToolsHelpers:ImageDocumentViewer>
             </StackPanel>
             <Border
                 BorderBrush="DarkBlue"
