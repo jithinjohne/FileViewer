@@ -1,6 +1,7 @@
 ﻿using FileViewer.MVVM;
 using Leadtools.Codecs;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -15,9 +16,10 @@ namespace FileViewer
             codecs.Options.Load.PreferVector = true;
             codecs.Options.Load.AllPages = true;
             codecs.Options.Load.Resolution = 72;
+            codecs.StartOptimizedLoad();
 
             CodecsImageInfo imageInfo = codecs.GetInformation(stream, true);
-            Pages = new List<PageViewModel>();
+            Pages = new ObservableCollection<PageViewModel>();
             for (int page = 1; page <= imageInfo.TotalPages; page++)
             {
                 Pages.Add(new PageViewModel(stream, codecs, page));
@@ -29,7 +31,7 @@ namespace FileViewer
             }
         }
 
-        public IList<PageViewModel> Pages
+        public ObservableCollection<PageViewModel> Pages
         {
             get;
         }

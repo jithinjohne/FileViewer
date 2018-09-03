@@ -13,7 +13,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Style
-                x:Key="ImageViewerStyle" TargetType="Leadtools_Controls_Wpf:ImageViewer">
+                x:Key="ImageViewerStyle"
+                TargetType="Leadtools_Controls_Wpf:ImageViewer">
                 <Setter
                     Property="Background"
                     Value="Blue"></Setter>
@@ -23,63 +24,109 @@
     <UserControl.DataContext>
         <local:FileViewerViewModel />
     </UserControl.DataContext>
-    <StackPanel>
 
-        <Grid
-            Margin="25">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="Auto" />
-                <RowDefinition
-                    Height="*" />
-            </Grid.RowDefinitions>
+    <Grid
+        Margin="25"
+        Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="180"></ColumnDefinition>
+            <ColumnDefinition
+                Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-            <StackPanel
-                Grid.Row="0"
-                HorizontalAlignment="Left"
-                Orientation="Horizontal">
-                <Button
-                    Margin="0 0 10 0"
-                    Content="Open file"
-                    Command="{Binding SelectFileCommand}"
-                    HorizontalAlignment="Left" />
-                <Button
-                    Content="-"
-                    Command="{Binding ZoomOut}" />
-                <Button
-                    Margin="5 0"
-                    Content="+"
-                    Command="{Binding ZoomIn}" />
-                <Button
-                    Content="Fit"
-                    Command="{Binding Fit}" />
-                <Button
-                    Margin="10 0 5 0"
-                    Content="˅"
-                    Command="{Binding PreviousPage}" />
-                <Button
-                    Content="˄"
-                    Command="{Binding NextPage}" />
-                <TextBlock
-                    Margin="10 0"
-                    Text="{Binding ImageDocument.ActivePage.PageNumber}" />
-                <TextBlock
-                    Margin="10 0"
-                    Text="{Binding ImageDocument.ActivePage.ZoomLevel}" />
-            </StackPanel>
-            <Border
-                BorderBrush="DarkBlue"
-                BorderThickness="2"
-                CornerRadius="5"
-                Margin="0 10"
-                Grid.Row="1">
-                <Leadtools_Controls_Wpf:ImageViewer
-                    Width="800"
-                    Height="600"
-                    Style="{StaticResource ImageViewerStyle}"
-                    leadToolsHelpers:LeadToolsAttachedProperties.RasterImage="{Binding ImageDocument.ActivePage.Image}"
-                    leadToolsHelpers:LeadToolsAttachedProperties.ZoomLevel="{Binding ImageDocument.ActivePage.ZoomLevel}" />
-            </Border>
-        </Grid>
-    </StackPanel>
+        <StackPanel
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <Button
+                Margin="0 0 10 0"
+                Content="Open file"
+                Command="{Binding SelectFileCommand}"
+                HorizontalAlignment="Left" />
+            <Button
+                Content="-"
+                Command="{Binding ZoomOut}" />
+            <Button
+                Margin="5 0"
+                Content="+"
+                Command="{Binding ZoomIn}" />
+            <Button
+                Content="Fit"
+                Command="{Binding Fit}" />
+            <Button
+                Margin="10 0 5 0"
+                Content="˅"
+                Command="{Binding PreviousPage}" />
+            <Button
+                Content="˄"
+                Command="{Binding NextPage}" />
+            <TextBlock
+                Margin="10 0"
+                Text="{Binding ImageDocument.ActivePage.PageNumber}" />
+            <TextBlock
+                Margin="10 0"
+                Text="{Binding ImageDocument.ActivePage.ZoomLevel}" />
+        </StackPanel>
+        <Border
+            Grid.Column="0"
+            Grid.Row="1"
+            BorderBrush="AliceBlue"
+            BorderThickness="1"
+            Margin="0 10"
+            Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}">
+            <ListView
+                ItemsSource="{Binding ImageDocument.Pages}"
+                SelectedItem="{Binding ImageDocument.ActivePage}"
+                VirtualizingPanel.IsVirtualizing="True"
+                ScrollViewer.IsDeferredScrollingEnabled="True"
+                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <!--<Leadtools_Controls_Wpf:ImageViewer
+                                Height="200"
+                                Width="150"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                leadToolsHelpers:LeadToolsAttachedProperties.ZoomLevel="1"
+                                leadToolsHelpers:LeadToolsAttachedProperties.RasterImage="{Binding  Image}">
+                            </Leadtools_Controls_Wpf:ImageViewer>-->
+                            <Image
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Height="200"
+                                Width="150"
+                                Source="{Binding Thumbnail, Mode=OneWay}" />
+
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding PageNumber}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+        <Border
+            BorderBrush="DarkBlue"
+            BorderThickness="2"
+            CornerRadius="5"
+            Margin="10"
+            Grid.Row="1"
+            Grid.Column="1">
+            <Leadtools_Controls_Wpf:ImageViewer
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Style="{StaticResource ImageViewerStyle}"
+                leadToolsHelpers:LeadToolsAttachedProperties.RasterImage="{Binding ImageDocument.ActivePage.Image}"
+                leadToolsHelpers:LeadToolsAttachedProperties.ZoomLevel="{Binding ImageDocument.ActivePage.ZoomLevel}" />
+        </Border>
+    </Grid>
 </UserControl>
